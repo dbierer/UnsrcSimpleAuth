@@ -1,0 +1,52 @@
+<?php
+// configure desired options
+// move to the /config/autoload folder for your application
+// rename to "unsrc-simple-auth.local.php"
+// to see if the user is logged in,
+// in your controller, use the "isLoggedIn(]" controller plugin
+// in a view template use the "isLoggedIn(]" view helper 
+// create a folder /public/captcha
+// make sure the ZF2 app has rights to write to /public/captcha 
+return [
+	'unsrc-simple-auth' => [
+		'credentials' => [
+            // the sub-array key is the username
+	    	['admin' => 
+                // this is the password for this user
+                'password' => 'password',
+                // the sub-sub-array below is stored as the session identity when login is successful
+                'identity' => ['username' => 'admin', 'display' => 'Administrator']
+            ],
+	    	['user' => 
+                // this is the password for this user
+                'password' => 'password',
+                // the sub-sub-array below is stored as the session identity when login is successful
+                'identity' => ['username' => 'user', 'display' => 'Valid User']
+            ],
+            // add as many more as you wish
+	   	],
+        // route to redirect to if login attempt fails
+		'redirect' => 'home',
+	],
+	'service_manager' => [
+		'services' => [
+			'unsrc-simple-auth-captcha-options' => [
+		    	'expiration' => 300,
+		    	'font'		=> __DIR__ . '/../../module/SimpleAuth/fonts/FreeSansBold.ttf',
+		    	'fontSize'	=> 24,
+		    	'height'	=> 50,
+		    	'width'		=> 200,
+                // this directory needs to be created and read/writeable!
+		    	'imgDir'	=> __DIR__ . '/../../public/captcha',
+		    	'imgUrl'	=> '/captcha',  
+				'wordLen'	=> 4,			// #characters  	
+			],
+		],
+	],
+    'view_manager' => [
+        'template_map' => [
+            // uncomment below and change value to override login script view template
+            //'unsrc-simple-auth/index/login' => <your own login view script>
+        ],
+    ],
+];
