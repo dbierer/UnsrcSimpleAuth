@@ -19,21 +19,29 @@ class LoginController extends AbstractActionController
     	if ($this->getRequest()->isPost()) {
     		$this->authForm->setData($this->params()->fromPost());
     		if ($this->authForm->isValid()) {
-    			$this->authAdapter->setIdentity($this->authForm->getValue('who'));
-    			$this->authAdapter->setCredential($this->authForm->getValue('what'));
+                $data = $this->authForm->getData();
+    			$this->authAdapter->setIdentity($data['who']);
+    			$this->authAdapter->setCredential($data['what']);
                 $result = $this->authAdapter->authenticate();
                 if ($result->isValid()) {
                     if (!isset($this->authConfig['credentials'][$this->authAdapter->getIdentity()])) {
-                        return $this->redirect()->toRoute($this->redirect));
+                        return $this->redirect()->toRoute($this->authConfig['redirect']);
                     }
                     $storage = $this->authService->getStorage();
                     $storage->write($this->authConfig['credentials'][$this->authAdapter->getIdentity()]['identity']);
+                    return $this->redirect()->toRoute($this->authConfig['redirect']);
                 }
     		}
     	}
     	$viewModel = new ViewModel(array('form' => $this->authForm));
-    	$viewModel->setTemplate('simple-auth/index/login');
+    	$viewModel->setTemplate('unsrc-simple-auth/login/login');
         return $viewModel;
+    }
+    
+    public function logoutAction()
+    {
+        $this->authService->clearIdentity();
+        return $this->redirect()->toRoute($this->authConfig['redirect']);
     }
     
     public function setAuthForm($form)

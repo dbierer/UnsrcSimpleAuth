@@ -10,7 +10,8 @@ return [
     ],
 	'view_helpers' => [
         'invokables' => [
-			'isLoggedIn' => 'UnsrcSimpleAuth\Plugin\IsLoggedInViewHelper',
+			'isLoggedIn'  => 'UnsrcSimpleAuth\Plugin\IsLoggedInViewHelper',
+			'getIdentity' => 'UnsrcSimpleAuth\Plugin\GetIdentityViewHelper',
 		],
     ],
 	'service_manager' => [
@@ -21,13 +22,23 @@ return [
 	],
 	'router' => [
         'routes' => [
-            'simple-auth-login' => [
+            'unsrc-simple-auth-login' => [
                 'type'    => 'Literal',
                 'options' => [
                     'route'    => '/login',
                     'defaults' => [
-                        'controller'    => 'unsrc-simple-auth-controller-index',
+                        'controller'    => 'unsrc-simple-auth-controller-login',
                         'action'        => 'login',
+                    ],
+                ],
+            ],
+            'unsrc-simple-auth-logout' => [
+                'type'    => 'Literal',
+                'options' => [
+                    'route'    => '/logout',
+                    'defaults' => [
+                        'controller'    => 'unsrc-simple-auth-controller-login',
+                        'action'        => 'logout',
                     ],
                 ],
             ],
@@ -35,4 +46,5 @@ return [
     ],
     'view_manager' => [
         'template_map' => include __DIR__ . '/../template_map.php',
+    ],
 ];

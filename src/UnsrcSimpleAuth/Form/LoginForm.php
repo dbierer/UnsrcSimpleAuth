@@ -20,6 +20,7 @@ class LoginForm extends Form
             'type'  => 'Password',
 			'options' => array('label' => 'Password'),
         ));
+        $captchaOptions['font']	= __DIR__ . '/../../../fonts/FreeSansBold.ttf';
 		$this->add(array(
             'type' => 'Captcha',
             'name' => 'captcha',

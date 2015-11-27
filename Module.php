@@ -7,12 +7,13 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace SimpleAuth;
+namespace UnsrcSimpleAuth;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -21,8 +22,8 @@ class Module implements AutoloaderProviderInterface
         return [
             'Zend\Loader\ClassMapAutoloader' => [
                 __DIR__ . '/autoload_classmap.php',
-            ),
-        );
+            ],
+        ];
     }
 
     public function getConfig()
@@ -34,7 +35,7 @@ class Module implements AutoloaderProviderInterface
     {
         return [
             'factories' => [
-                'unsrc-simple-auth-controller-logim' => function ($cm) {
+                'unsrc-simple-auth-controller-login' => function ($cm) {
                     $sm = $cm->getServiceLocator();
                     $controller = new \UnsrcSimpleAuth\Controller\LoginController();
                     $controller->setAuthAdapter($sm->get('unsrc-simple-auth-adapter'));
@@ -68,4 +69,5 @@ class Module implements AutoloaderProviderInterface
             ],
         ];
     }
+    
 }

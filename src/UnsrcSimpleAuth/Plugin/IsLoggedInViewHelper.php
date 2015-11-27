@@ -11,6 +11,7 @@ class IsLoggedInViewHelper extends AbstractHelper implements ServiceLocatorAware
 	public function __invoke()
 	{
         return $this->getServiceLocator()
+                    ->getServiceLocator()
                     ->get('unsrc-simple-auth-service')
                     ->hasIdentity();
 	}

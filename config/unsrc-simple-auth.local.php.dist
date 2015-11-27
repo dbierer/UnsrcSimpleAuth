@@ -7,17 +7,18 @@
 // in a view template use the "isLoggedIn(]" view helper 
 // create a folder /public/captcha
 // make sure the ZF2 app has rights to write to /public/captcha 
+use Zend\Authentication\Result;
 return [
 	'unsrc-simple-auth' => [
 		'credentials' => [
             // the sub-array key is the username
-	    	['admin' => 
+	    	'admin' => [
                 // this is the password for this user
                 'password' => 'password',
                 // the sub-sub-array below is stored as the session identity when login is successful
                 'identity' => ['username' => 'admin', 'display' => 'Administrator']
             ],
-	    	['user' => 
+	    	'user' => [
                 // this is the password for this user
                 'password' => 'password',
                 // the sub-sub-array below is stored as the session identity when login is successful
@@ -27,12 +28,19 @@ return [
 	   	],
         // route to redirect to if login attempt fails
 		'redirect' => 'home',
+        // authentication messages: DON'T change the keys!!!
+        'authentication-messages' => [
+            (string) Result::FAILURE                    => 'Unable to authenticate this username',
+            (string) Result::FAILURE_IDENTITY_NOT_FOUND => 'Unable to confirm this username',
+            (string) Result::FAILURE_CREDENTIAL_INVALID => 'Unable to confirm this password',
+            (string) Result::FAILURE_UNCATEGORIZED      => 'Missing credentials.  Check unsrc-simple-auth.local.php config file.',                
+            (string) Result::SUCCESS                    => 'Successful login',
+        ],
 	],
 	'service_manager' => [
 		'services' => [
 			'unsrc-simple-auth-captcha-options' => [
 		    	'expiration' => 300,
-		    	'font'		=> __DIR__ . '/../../module/SimpleAuth/fonts/FreeSansBold.ttf',
 		    	'fontSize'	=> 24,
 		    	'height'	=> 50,
 		    	'width'		=> 200,
@@ -46,7 +54,7 @@ return [
     'view_manager' => [
         'template_map' => [
             // uncomment below and change value to override login script view template
-            //'unsrc-simple-auth/index/login' => <your own login view script>
+            //'unsrc-simple-auth/login/login' => <your own login view script>
         ],
     ],
 ];
